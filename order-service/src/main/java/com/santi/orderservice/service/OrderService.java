@@ -21,7 +21,7 @@ import java.util.UUID;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final WebClient.Builder webClientBuilder;
-    public void placeOrder(OrderRequest orderRequest){
+    public String placeOrder(OrderRequest orderRequest){
         Order order = new Order();
         order.setOrderNumber(UUID.randomUUID().toString());
 
@@ -43,6 +43,7 @@ public class OrderService {
                 && inventoryResponseArray.length >= order.getOrderLineItemsList().size();
         if(allProductsInStock){
             orderRepository.save(order);
+            return "Order saved";
         } else {
           throw new IllegalArgumentException("Product is not in stock");
         }
